@@ -9,11 +9,11 @@ import java.util.List;
 /**
  * Represents a vehicle in the game.
  */
-abstract class AGamePiece implements IConfigAware {
+abstract class ATile implements IConfigAware {
   Area area;
   Color color;
 
-  AGamePiece(Area area, Color color) {
+  ATile(Area area, Color color) {
     this.area = area;
     this.color = color;
   }
@@ -67,7 +67,7 @@ abstract class AGamePiece implements IConfigAware {
    * @param other other game piece to check
    * @return if these pieces overlap
    */
-  boolean overlaps(AGamePiece other) {
+  boolean overlaps(ATile other) {
     return this.area.overlaps(other.area);
   }
 
@@ -113,7 +113,7 @@ abstract class AGamePiece implements IConfigAware {
    * @param pieces the exits to check against
    * @return if the game is won
    */
-  boolean hasWon(List<AGamePiece> pieces) {
+  boolean hasWon(List<ATile> pieces) {
     return false;
   }
 
@@ -123,7 +123,7 @@ abstract class AGamePiece implements IConfigAware {
    * @param o the piece to consider for having won the game
    * @return if the game is won
    */
-  boolean containsWinningPiece(AGamePiece o) {
+  boolean containsWinningPiece(ATile o) {
     return false;
   }
 

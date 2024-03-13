@@ -124,7 +124,7 @@ class ExamplesArea {
   }
 }
 
-class ExamplesRushHour {
+class ExamplesGame {
   // formatter refuses to keep the strings looking rectangular
   String demoLevel =
       "+------+\n" +
@@ -217,16 +217,16 @@ class ExamplesRushHour {
   }
 
   void testWon(Tester t) {
-    RushHour board = new RushHour(won, new Posn(2, 2));
+    Game board = new Game(won, new Posn(2, 2));
     t.checkExpect(board.isWon(), true);
-    t.checkExpect(new RushHour(demoLevel, new Posn(1, 3)).isWon(), false);
-    t.checkExpect(new RushHour(unsolvable, new Posn(1, 3)).isWon(), false);
-    t.checkExpect(new RushHour(demoWin, new Posn(6, 3)).isWon(), true);
+    t.checkExpect(new Game(demoLevel, new Posn(1, 3)).isWon(), false);
+    t.checkExpect(new Game(unsolvable, new Posn(1, 3)).isWon(), false);
+    t.checkExpect(new Game(demoWin, new Posn(6, 3)).isWon(), true);
   }
 
   void testSelect(Tester t) {
-    RushHour orig = new RushHour(demoLevel, new Posn(1, 3));
-    RushHour test = new RushHour(demoLevel, new Posn(1, 3));
+    Game orig = new Game(demoLevel, new Posn(1, 3));
+    Game test = new Game(demoLevel, new Posn(1, 3));
     test.selectPiece(new Posn(1, 3));
     t.checkExpect(test.selectedPiece.isPresent(), true);
     t.checkExpect(test.selectedPiece.map(p -> p.contains(new Posn(1, 3))).orElse(false), true);
@@ -240,12 +240,12 @@ class ExamplesRushHour {
   }
 }
 
-class ExamplesAGamePiece implements IConfigAware {
+class ExamplesATile implements IConfigAware {
   // AGamePiece is abstract so we mostly use Wall (it's the closest to the abstract class)
-  AGamePiece w1 = new Wall(new Posn(0, 0));
-  AGamePiece w2 = new Wall(new Posn(1, 1));
+  ATile w1 = new Wall(new Posn(0, 0));
+  ATile w2 = new Wall(new Posn(1, 1));
 
-  AGamePiece v1 = new Vehicle(
+  ATile v1 = new MovableTile(
       new Area(new Posn(0, 0), new Posn(2, 3)),
       new ArrayList<>(),
       Color.GREEN);
@@ -362,8 +362,8 @@ class ExamplesAGamePiece implements IConfigAware {
   }
 
   void testMove(Tester t) {
-    AGamePiece w1p = new Wall(new Posn(0, 0));
-    AGamePiece w2p = new Wall(new Posn(1, 1));
+    ATile w1p = new Wall(new Posn(0, 0));
+    ATile w2p = new Wall(new Posn(1, 1));
 
     t.checkExpect(w1, w1p);
     w1.move(new Posn(1, 1));
@@ -383,12 +383,12 @@ class ExamplesAGamePiece implements IConfigAware {
   }
 }
 
-class ExamplesAPointPiece {
+class ExamplesAPointTile {
   // APointPiece is abstract, but it has two (mostly very small) inheritors
   // the only real defining property of APointPiece is that the pieces are 1 x 1.
 
-  APointPiece p1 = new Wall(new Posn(0, 0));
-  APointPiece p2 = new Exit(new Posn(3, 0));
+  APointTile p1 = new Wall(new Posn(0, 0));
+  APointTile p2 = new Exit(new Posn(3, 0));
 
   void testWidth(Tester t) {
     t.checkExpect(p1.getWidth(), 1);
@@ -408,11 +408,11 @@ class ExamplesWall {
 
 class ExamplesExit {
   Exit exit = new Exit(new Posn(3, 0));
-  AGamePiece otherPiece = new Vehicle(
+  ATile otherPiece = new MovableTile(
       new Area(new Posn(0, 0), new Posn(3, 0)),
       List.of(new Posn(1, 0)),
       Color.GREEN);
-  AGamePiece target = new TargetVehicle(
+  ATile target = new TargetTile(
       new Area(new Posn(4, 0), new Posn(4, 0)),
       List.of(new Posn(-1, 0)));
 
@@ -428,12 +428,12 @@ class ExamplesExit {
   }
 }
 
-class ExamplesVehicle implements IConfigAware {
-  Vehicle unmovable = new Vehicle(
+class ExamplesMovableTile implements IConfigAware {
+  MovableTile unmovable = new MovableTile(
       new Area(new Posn(0, 0), new Posn(0, 0)),
       List.of(),
       Color.GREEN);
-  Vehicle right = new Vehicle(
+  MovableTile right = new MovableTile(
       new Area(new Posn(0, 0), new Posn(3, 0)),
       List.of(new Posn(1, 0)),
       Color.BLUE);
@@ -472,13 +472,13 @@ class ExamplesVehicle implements IConfigAware {
   }
 }
 
-class ExamplesTargetVehicle {
-  TargetVehicle t1 = new TargetVehicle(
+class ExamplesTargetTile {
+  TargetTile t1 = new TargetTile(
       new Area(new Posn(0, 0), new Posn(0, 2)),
       List.of());
 
-  AGamePiece e1 = new Exit(new Posn(0, 1));
-  AGamePiece e2 = new Exit(new Posn(1, 0));
+  ATile e1 = new Exit(new Posn(0, 1));
+  ATile e2 = new Exit(new Posn(1, 0));
 
   void testTargetCreationColor(Tester t) {
     t.checkExpect(t1.color, Color.RED);

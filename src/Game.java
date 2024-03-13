@@ -11,15 +11,15 @@ import java.util.Optional;
  * Walls can be anywhere on the board.
  * the goal position can be placed anywhere.
  */
-class RushHour implements IConfigAware {
-  List<AGamePiece> pieces;
+class Game implements IConfigAware {
+  List<ATile> pieces;
 
   RuntimeException parseError =
       new IllegalArgumentException("Provided character was not a valid piece type");
 
-  Optional<AGamePiece> selectedPiece;
+  Optional<ATile> selectedPiece;
 
-  RushHour(List<AGamePiece> pieces) {
+  Game(List<ATile> pieces) {
     this.pieces = pieces;
     this.selectedPiece = Optional.empty();
   }
@@ -42,7 +42,7 @@ class RushHour implements IConfigAware {
    * @throws IllegalArgumentException if any two game pieces intersect at the start of the game,
    *                                  or there are illegal characters in the string
    */
-  RushHour(String level, Posn targetVehiclePos) {
+  Game(String level, Posn targetVehiclePos) {
     this(new ArrayList<>()); // we will add to this list shortly
 
     float hue = 0.1f;
@@ -71,13 +71,13 @@ class RushHour implements IConfigAware {
         case 'T':
         case 't': {
           if (new Posn(x, y).equals(targetVehiclePos)) {
-            this.pieces.add(new TargetVehicle(
+            this.pieces.add(new TargetTile(
                 new Area(pos, this.computeBottomRight(pos, c)),
                 this.computeAllowedMovements(c)
             ));
           } else {
             this.pieces.add(
-                new Vehicle(
+                new MovableTile(
                     new Area(pos, this.computeBottomRight(pos, c)),
                     this.computeAllowedMovements(c),
                     Color.getHSBColor(hue, 1, 1)));
@@ -120,7 +120,7 @@ class RushHour implements IConfigAware {
     int width = 0;
     int height = 0;
 
-    for (AGamePiece p : this.pieces) {
+    for (ATile p : this.pieces) {
       width = Math.max(p.getMaxX(), width);
       height = Math.max(p.getMaxY(), height);
     }
@@ -128,7 +128,7 @@ class RushHour implements IConfigAware {
     WorldImage image = new RectangleImage(width, height, OutlineMode.SOLID, Color.WHITE)
         .movePinholeTo(new Posn(-width / 2, -height / 2));
 
-    for (AGamePiece p : this.pieces) {
+    for (ATile p : this.pieces) {
       image = new OverlayImage(
           p.draw(this.selectedPiece.map(x -> p == x).orElse(false)),
           image);
@@ -145,8 +145,8 @@ class RushHour implements IConfigAware {
   boolean hasOverlappingPieces() {
     for (int i = 0; i < this.pieces.size(); i += 1) {
       for (int j = i + 1; j < this.pieces.size(); j += 1) {
-        AGamePiece iPiece = this.pieces.get(i);
-        AGamePiece jPiece = this.pieces.get(j);
+        ATile iPiece = this.pieces.get(i);
+        ATile jPiece = this.pieces.get(j);
 
         if (iPiece.overlaps(jPiece)) {
           return true;
@@ -176,7 +176,7 @@ class RushHour implements IConfigAware {
    */
   void selectPiece(Posn pos) {
     this.selectedPiece = Optional.empty();
-    for (AGamePiece piece : this.pieces) {
+    for (ATile piece : this.pieces) {
       if (piece.contains(pos)) {
         this.selectedPiece = Optional.of(piece);
       }

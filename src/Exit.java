@@ -5,7 +5,7 @@ import java.awt.Color;
 /**
  * Represents the game's exit.
  */
-class Exit extends APointPiece {
+class Exit extends APointTile {
   Exit(Posn basePoint) {
     super(basePoint, Color.LIGHT_GRAY);
   }
@@ -17,7 +17,7 @@ class Exit extends APointPiece {
    * @return if the game is won
    */
   @Override
-  boolean containsWinningPiece(AGamePiece o) {
+  boolean containsWinningPiece(ATile o) {
     return this.overlaps(o);
   }
 

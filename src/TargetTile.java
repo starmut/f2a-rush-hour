@@ -6,8 +6,8 @@ import java.util.List;
 /**
  * Represents the target vehicle in a game of rush hour
  */
-class TargetVehicle extends Vehicle {
-  TargetVehicle(Area a, List<Posn> allowedMovements) {
+class TargetTile extends MovableTile {
+  TargetTile(Area a, List<Posn> allowedMovements) {
     super(a, allowedMovements, Color.RED);
   }
 
@@ -18,7 +18,7 @@ class TargetVehicle extends Vehicle {
    * @return if the game is won
    */
   @Override
-  boolean hasWon(List<AGamePiece> pieces) {
+  boolean hasWon(List<ATile> pieces) {
     return pieces.stream().anyMatch(p -> p.containsWinningPiece(this));
   }
 }

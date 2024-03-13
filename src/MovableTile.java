@@ -7,10 +7,10 @@ import java.util.List;
 /**
  * Represents a movable, selectable, vehicle.
  */
-class Vehicle extends AGamePiece {
+class MovableTile extends ATile {
   List<Posn> allowedMovements;
 
-  Vehicle(Area a, List<Posn> allowedMovements, Color color) {
+  MovableTile(Area a, List<Posn> allowedMovements, Color color) {
     super(a, color);
     this.allowedMovements = allowedMovements;
   }

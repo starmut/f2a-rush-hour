@@ -7,10 +7,10 @@ import javalib.worldimages.WorldImage;
 import java.awt.*;
 
 class RushHourWorld extends World implements IConfigAware {
-  RushHour game;
+  Game game;
 
   RushHourWorld(String level, Posn targetVehiclePos) {
-    this.game = new RushHour(level, targetVehiclePos);
+    this.game = new Game(level, targetVehiclePos);
   }
 
   @Override
