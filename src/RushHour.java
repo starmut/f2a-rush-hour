@@ -175,6 +175,7 @@ class RushHour implements IConfigAware {
    * @param pos position of selection (in-game coordinates)
    */
   void selectPiece(Posn pos) {
+    this.selectedPiece = Optional.empty();
     for (AGamePiece piece : this.pieces) {
       if (piece.contains(pos)) {
         this.selectedPiece = Optional.of(piece);
