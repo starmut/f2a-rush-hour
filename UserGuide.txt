@@ -1,0 +1,20 @@
+# User Guide
+
+## Running the game
+
+To run Rush Hour, simply run the `ExamplesRushHourWorld` class using the tester library.
+The java command should look something like:
+```
+java -classpath out/production/hw7-rush-hour:/path/to/javalib.jar:/path/to/tester.jar \
+     tester.Main ExamplesRushHourWorld
+```
+
+## Playing the game
+
+The target piece is red. You can click to select a piece, and it will become yellow.
+Selected pieces can be moved by pressing the arrow keys, or WASD.
+
+Pieces move along the direction in which they are longest.
+If a piece cannot move in the direction you specified, it will not move.
+
+The goal is to get the red piece to the exit, which is drawn in grey.

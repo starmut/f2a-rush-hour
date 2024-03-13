@@ -1,0 +1,62 @@
+# Design
+
+## interface IConfigAware
+
+Interface that holds constants (because `public static final` is too illegal).
+Manages rendering properties of the game, such as the scale and gap between vehicles.
+Classes implementing this interface are "aware" of the configuration, and can use these values.
+
+## class Area
+
+A general representations of an Area that can be used for hit testing
+and overlap checking with other areas. Uses double-inclusive intervals
+since those make collision checking clearer; half-open is more suited
+to splitting and iterating, which is not functionality we need here.
+
+## abstract class AGamePiece
+
+Represents a generic game piece. We abstracted it to handle most general functionality
+like piece collisions, hit tests, and drawing.
+It contains an area representing the shape of the piece and a color for drawing.
+It also contains default implementations of various helpers that are overridden in subclasses.
+
+## abstract class APointPiece extends AGamePiece
+
+Represents a generic 1x1 game piece. Used as the base for Wall and Exit.
+
+## class Wall extends APointPiece
+
+This is a very simple class. It just extends APointPiece and sets the color to gray.
+Basically syntactic sugar :)
+
+## class Exit extends APointPiece
+
+A 1x1 piece that cannot be collided with and checks the win condition.
+Color is automatically set to light gray.
+
+## class Vehicle extends AGamePiece
+
+A movable, selectable vehicle (the cars and trucks in the game).
+Overrides various methods of AGamePiece to draw itself in a different color when selected.
+Also handles movement by keeping track of a list of allowed movements and moving itself
+when instructed if able to move in that direction.
+
+## class TargetVehicle extends Vehicle
+
+A Vehicle that can check if it has won, and with its color set to red.
+
+## class RushHour
+
+The main class that performs all game logic.
+Holds the pieces on the board, and the selected piece (if any).
+
+> Note: _any_ piece can be selected, even Wall and Exit.
+> Such pieces just do not respond to selection, and don't change color or move.
+> This was to avoid the type of `selectedPiece` being `Option<Vehicle>` which means that
+> we would have to treat vehicles and other pieces separately, or do some type casting.
+
+## class RushHourWorld extends World
+
+A wrapper for the RushHourGame that uses the BigBang handlers to make the game playable.
+Also deals with any scale-specific stuff for drawing and transforming screen coordinates
+into game coordinates for mouse events.

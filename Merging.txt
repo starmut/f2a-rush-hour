@@ -1,0 +1,42 @@
+# Merging
+
+## Ari's Previous Implementation
+
+- `Wall` and `Exit` were game pieces
+  - this allowed me to place walls anywhere and use non-rectangular boards already
+- Drawing coordinate system different from in-game coordinate system
+  - crossing between the GUI-game boundary involved multiplying or dividing coordinates by SCALE
+- Generic `IList<T>` with `Empty` and `Cons` classes, usual abstractions, and `foldrI` (foldr + index)
+- Game pieces had _one_ `Posn basePoint` field, and a `int length`.
+  - This worked fine for hw5 purposes, but forced me to make horizontal and vertical subclasses
+  - This also forced my implementation to only have 1 x n (or n x 1) vehicles
+- Random (but persistent) color generation for pieces
+  - This required me to make two very similar constructors for most classes,
+    that either did or did not take a color argument.
+- Parser capable of accepting non-rectangular boards with walls anywhere
+  - My parser enforced rectangular boards, but it could be easily removed
+
+## Daniel's Previous Implementation
+
+- Vehicles stored separately from exits and walls
+  - Walls were a list of Posn, exit was a single Posn
+- Support for arbitrary-shaped grids and walls anywhere
+- Generic `IList<T>` with `Empty` and `Cons` classes, usual abstractions
+- Game pieces represented as rectangles with a pair of Posns for top left and bottom right
+  - Ranges are inclusive at both ends to make collisions cleaner
+- Uniformly-spaced HSV colors for pieces
+- Non-cursed parser using a for-each loop
+
+## Which Parts from Where?
+
+### Taken from Ari
+
+- `Wall` and `Exit` being game pieces
+- Game/UI coordinate system
+
+### Taken from Daniel
+
+- No separation between horizontal and vertical moving vehicles
+- Two `Posn`s for game pieces (moved into `Area`)
+- Evenly HSV separated color selection
+- Better-designed parser (no cursed IList folding)

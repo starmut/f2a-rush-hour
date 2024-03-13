@@ -1,0 +1,39 @@
+# Changes
+
+## Mutation
+
+In line with the (optional) switch to using `impworld`, we decided to make our methods
+_mutate_ fields rather than create and return new objects with fields changed.
+This made it easier to deal with changes to pieces, such as movement while not needing to
+change the whole list.
+
+## Two `Posn`s -> `Area`
+
+In Daniel's implementation for game pieces for hw5 (which we used large parts of),
+pieces held the information for their top-left and bottom-right `Posn`s.
+As the assignment specified, we moved these two fields into an `Area` class.
+
+## `IList` -> `List`
+
+We switched over from using `Empty` and `Cons` classes for our lists to using
+`java.util.List` (mainly `ArrayList`).
+Not having a direct `foldl`/`foldr` replacement was slightly inconvenient, but it could be
+easily worked around.
+
+## `Vehicle`: `List<Posn> allowedMovements`
+
+Previously in Ari's implementation, there were two classes that described horizontally-
+and vertically- moving vehicles.
+Daniel's implementation assumed that vehicles will move in the direction they are shorter in.
+
+We decided to add a field to the `Vehicle` class to describe the allowed motions for each vehicle.
+Non-`Vehicle` pieces have no allowed movements, and thus do not respond to any movement.
+This, combined with the `Area` class, will allow us to make vehicles of any size with any arbitrary
+move sets, with minimal changes to our code.
+
+## Collidable Pieces
+
+Most pieces are collidable, as in they would prevent movement if it results in a piece overlapping
+with it. `Exit`s however, should allow vehicles to overlap them, since that's the win condition.
+We added a method `isCollidable()` to `AGamePiece` to determine if a piece is a "physical" piece
+that would prevent overlapping.
