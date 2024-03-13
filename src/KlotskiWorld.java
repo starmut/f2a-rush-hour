@@ -2,7 +2,7 @@ import javalib.worldimages.Posn;
 
 import java.util.List;
 
-class RushHourWorld extends AGameWorld {
+class KlotskiWorld extends AGameWorld {
 
   /**
    * Creates a RushHourWorld from a string and a position of the goal piece.
@@ -22,7 +22,7 @@ class RushHourWorld extends AGameWorld {
    * @throws IllegalArgumentException if any two game pieces intersect at the start of the game,
    *                                  or there are illegal characters in the string
    */
-  RushHourWorld(String level, Posn targetVehiclePos) {
+  KlotskiWorld(String level, Posn targetVehiclePos) {
     super(level, targetVehiclePos);
   }
 
@@ -43,6 +43,10 @@ class RushHourWorld extends AGameWorld {
         return topLeft.offset(0, 2);
       case 't':
         return topLeft.offset(2, 0);
+      case '.':
+        return topLeft;
+      case 'S':
+        return topLeft.offset(1, 1);
       default:
         throw this.parseError;
     }
@@ -57,15 +61,10 @@ class RushHourWorld extends AGameWorld {
    * @return list of allowed movements of the vehicle
    */
   List<Posn> computeAllowedMovements(char c) {
-    switch (c) {
-      case 'C':
-      case 'T':
-        return List.of(new Posn(0, -1), new Posn(0, 1));
-      case 'c':
-      case 't':
-        return List.of(new Posn(1, 0), new Posn(-1, 0));
-      default:
-        throw this.parseError;
-    }
+    return List.of(
+            new Posn(0, 1),
+            new Posn(0, -1),
+            new Posn(1, 0),
+            new Posn(-1, 0));
   }
 }
