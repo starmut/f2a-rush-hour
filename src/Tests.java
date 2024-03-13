@@ -322,12 +322,6 @@ class ExamplesAGamePiece implements IConfigAware {
     t.checkExpect(v1.overlaps(w2), true);
   }
 
-  void testIsCollidable(Tester t) {
-    t.checkExpect(v1.isCollidable(), true);
-    t.checkExpect(w1.isCollidable(), true);
-    t.checkExpect(w2.isCollidable(), true);
-  }
-
   void testGetWidth(Tester t) {
     t.checkExpect(w1.getWidth(), 1);
     t.checkExpect(w2.getWidth(), 1);
@@ -515,8 +509,8 @@ class ExamplesRushHourWorld implements IConfigAware {
     new RushHourWorld(""
         + "   ++\n"
         + "  +  +\n"
-        + " + T  +\n"
-        + "+c   C X\n"
+        + " +    +\n"
+        + "+c  c  X\n"
         + "|     |\n"
         + " +    +\n"
         + " | c  |\n"

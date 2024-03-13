@@ -148,7 +148,7 @@ class RushHour implements IConfigAware {
         AGamePiece iPiece = this.pieces.get(i);
         AGamePiece jPiece = this.pieces.get(j);
 
-        if (iPiece.isCollidable() && jPiece.isCollidable() && iPiece.overlaps(jPiece)) {
+        if (iPiece.overlaps(jPiece)) {
           return true;
         }
       }
@@ -192,7 +192,7 @@ class RushHour implements IConfigAware {
     this.selectedPiece.ifPresent(p -> p.move(delta));
 
     // if the move results in overlapping pieces, undo the move.
-    if (this.hasOverlappingPieces()) {
+    if (this.hasOverlappingPieces() && !this.isWon()) {
       this.selectedPiece.ifPresent(p -> p.move(new Posn(-delta.x, -delta.y)));
     }
   }

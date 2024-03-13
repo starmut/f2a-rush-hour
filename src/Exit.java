@@ -26,7 +26,6 @@ class Exit extends APointPiece {
    *
    * @return if this pieces collides
    */
-  @Override
   boolean isCollidable() {
     return false;
   }

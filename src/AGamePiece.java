@@ -72,15 +72,6 @@ abstract class AGamePiece implements IConfigAware {
   }
 
   /**
-   * Is this piece a physical obstacle that can collide with other pieces?
-   *
-   * @return if this pieces collides
-   */
-  boolean isCollidable() {
-    return true;
-  }
-
-  /**
    * Return the width of this game piece
    *
    * @return width
