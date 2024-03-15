@@ -4,9 +4,12 @@ import javalib.worldimages.Posn;
 import javalib.worldimages.TextImage;
 import javalib.worldimages.WorldImage;
 
+import java.util.Collections;
 import java.util.List;
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 abstract class AGameWorld extends World implements IConfigAware {
   Game game;
@@ -39,7 +42,10 @@ abstract class AGameWorld extends World implements IConfigAware {
     // uses a lambda to count the number of vehicles in the input string
     // to do evenly-spaced HSV colors for the pieces
     float inc = 0.8f / level.chars()
-            .filter(ch -> ch == 'C' || ch == 'c' || ch == 'T' || ch == 't')
+            .filter(ch -> Stream.of('C', 'c', 'T', 't', 'S', '.')
+                .map(Integer::new)
+                .collect(Collectors.toList())
+                .contains(ch))
             .count();
 
     int x = 0;
@@ -152,6 +158,10 @@ abstract class AGameWorld extends World implements IConfigAware {
       case "d":
         delta = new Posn(1, 0);
         break;
+
+      case "u":
+        this.game.undoLastMove();
+        return;
 
       default:
         return;
