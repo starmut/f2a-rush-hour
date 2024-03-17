@@ -42,7 +42,7 @@ abstract class AGameWorld extends World implements IConfigAware {
     // to do evenly-spaced HSV colors for the pieces
     float inc = 0.8f / level.chars()
             .filter(ch -> Stream.of('C', 'c', 'T', 't', 'S', '.')
-                .map(Integer::new)
+                .map(Integer::valueOf)
                 .collect(Collectors.toList())
                 .contains(ch))
             .count();
