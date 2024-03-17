@@ -15,9 +15,11 @@ class Move {
   /**
    * Makes this move on the board.
    * EFFECT: changes the moved tile's position to perform the move.
+   *
+   * @return whether the move was successful
    */
-  void perform() {
-    this.tile.move(this.delta);
+  boolean perform() {
+    return this.tile.move(this.delta);
   }
 
   /**

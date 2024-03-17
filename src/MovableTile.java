@@ -38,11 +38,12 @@ class MovableTile extends ATile {
    * @param delta the amount by which to move
    */
   @Override
-  void move(Posn delta) {
+  boolean move(Posn delta) {
     if (!this.allowedMovements.contains(delta)) {
-      return;
+      return false;
     }
 
     this.area.offset(delta);
+    return true;
   }
 }

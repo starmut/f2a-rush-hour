@@ -131,9 +131,10 @@ abstract class ATile implements IConfigAware {
    * Moves this piece by the deltas specified by the given Posn.
    *
    * @param delta the amount by which to move
+   * @return whether the move was successful
    */
-  void move(Posn delta) {
-    // a general game piece cannot be moved, only Vehicles can
-    // intentionally does nothing
+  boolean move(Posn delta) {
+    // a general tile cannot be moved, only MovableTile can
+    return false;
   }
 }

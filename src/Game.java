@@ -129,11 +129,19 @@ class Game implements IConfigAware {
    * @param m the move to make
    */
   void makeMove(Move m) {
-    m.perform();
+    boolean canMove = m.perform();
+
+    if (!canMove) {
+      // if the piece can't move this way, do nothing more
+      // as the move never happened.
+      return;
+    }
 
     // if the move results in overlapping pieces, undo the move.
     if (this.hasOverlappingPieces() && !this.isWon()) {
-      m.negate().perform();
+      m.negate().perform(); // should be always possible
+      // we don't need to add this move to the stack, since
+      // it's as if it never happened.
     } else {
       this.moves.addFirst(m);
       this.updateScore(m);
