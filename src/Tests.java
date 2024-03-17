@@ -127,92 +127,92 @@ class ExamplesArea {
 class ExamplesGame {
   // formatter refuses to keep the strings looking rectangular
   String demoLevel =
-          "+------+\n" +
-                  "|      |\n" +
-                  "|  C T |\n" +
-                  "|c    CX\n" +
-                  "|t     |\n" +
-                  "|CCC c |\n" +
-                  "|    c |\n" +
-                  "+------+";
+      "+------+\n" +
+          "|      |\n" +
+          "|  C T |\n" +
+          "|c    CX\n" +
+          "|t     |\n" +
+          "|CCC c |\n" +
+          "|    c |\n" +
+          "+------+";
 
   String demoWin =
-          "+------+\n" +
-                  "|CCC  C|\n" +
-                  "|      |\n" +
-                  "|     cX\n" +
-                  "|t   T |\n" +
-                  "|c C   |\n" +
-                  "|c     |\n" +
-                  "+------+";
+      "+------+\n" +
+          "|CCC  C|\n" +
+          "|      |\n" +
+          "|     cX\n" +
+          "|t   T |\n" +
+          "|c C   |\n" +
+          "|c     |\n" +
+          "+------+";
 
   String unsolvable =
-          "+------+\n" +
-                  "|     T|\n" +
-                  "|      |\n" +
-                  "|c     X\n" +
-                  "|     T|\n" +
-                  "|      |\n" +
-                  "|      |\n" +
-                  "+------+";
+      "+------+\n" +
+          "|     T|\n" +
+          "|      |\n" +
+          "|c     X\n" +
+          "|     T|\n" +
+          "|      |\n" +
+          "|      |\n" +
+          "+------+";
 
   String noTarget = "X";
   String multiTarget = "XX";
   String noExit =
-          "+---+\n" +
-                  "|   |\n" +
-                  "+---+";
+      "+---+\n" +
+          "|   |\n" +
+          "+---+";
   String invalidChar =
-          "+------+\n" +
-                  "|     T|\n" +
-                  "|      |\n" +
-                  "|c  b  X\n" +
-                  "|     T|\n" +
-                  "|      |\n" +
-                  "|      |\n" +
-                  "+------+";
+      "+------+\n" +
+          "|     T|\n" +
+          "|      |\n" +
+          "|c  b  X\n" +
+          "|     T|\n" +
+          "|      |\n" +
+          "|      |\n" +
+          "+------+";
 
   String won =
-          "+---+\n" +
-                  "|   |\n" +
-                  "| t X\n" +
-                  "+---|";
+      "+---+\n" +
+          "|   |\n" +
+          "| t X\n" +
+          "+---|";
 
   void testParse(Tester t) {
     t.checkConstructorNoException(
-            "valid level",
-            "RushHour",
-            demoLevel, new Posn(1, 3)
+        "valid level",
+        "RushHour",
+        demoLevel, new Posn(1, 3)
     );
     t.checkConstructorNoException(
-            "unsolvable but valid",
-            "RushHour",
-            unsolvable, new Posn(1, 3)
+        "unsolvable but valid",
+        "RushHour",
+        unsolvable, new Posn(1, 3)
     );
     t.checkConstructorNoException(
-            "non-rectangular board",
-            "RushHour",
-            "+---+\n| |\n+-", new Posn(0, 0)
+        "non-rectangular board",
+        "RushHour",
+        "+---+\n| |\n+-", new Posn(0, 0)
     );
     t.checkConstructorNoException(
-            "no exits",
-            "RushHour",
-            noExit, new Posn(0, 0)
+        "no exits",
+        "RushHour",
+        noExit, new Posn(0, 0)
     );
     t.checkConstructorNoException(
-            "many exits",
-            "RushHour",
-            multiTarget, new Posn(0, 0)
+        "many exits",
+        "RushHour",
+        multiTarget, new Posn(0, 0)
     );
     t.checkConstructorNoException(
-            "no target",
-            "RushHour",
-            noTarget, new Posn(0, 0)
+        "no target",
+        "RushHour",
+        noTarget, new Posn(0, 0)
     );
     t.checkConstructorException(
-            new IllegalArgumentException("Illegal character \"b\" in level string!"),
-            "RushHour",
-            invalidChar, new Posn(0, 0)
+        new IllegalArgumentException("Illegal character \"b\" in level string!"),
+        "RushHour",
+        invalidChar, new Posn(0, 0)
     );
   }
 }
@@ -472,14 +472,14 @@ class ExamplesTargetTile {
 class ExamplesRushHourWorld implements IConfigAware {
   void testGame(Tester t) {
     new RushHourWorld(""
-      + "+------+\n"
-      + "|   +  |\n"
-      + "|  C T |\n"
-      + "|c    CX\n"
-      + "|t     |\n"
-      + "|CCC c |\n"
-      + "|    c |\n"
-      + "+------+", new Posn(1, 3)).bigBang(SCALE * 8, SCALE * 8);
+        + "+------+\n"
+        + "|   +  |\n"
+        + "|  C T |\n"
+        + "|c    CX\n"
+        + "|t     |\n"
+        + "|CCC c |\n"
+        + "|    c |\n"
+        + "+------+", new Posn(1, 3)).bigBang(SCALE * 8, SCALE * 8);
   }
 
   void testGameNonRectangular(Tester t) {
@@ -497,13 +497,13 @@ class ExamplesRushHourWorld implements IConfigAware {
 
 class ExamplesKlotskiWorld implements IConfigAware {
   void testKlotski(Tester t) {
-    new KlotskiWorld("" +
-            "+----+\n" +
-            "|CS C|\n" +
-            "|    |\n" +
-            "|Cc C|\n" +
-            "| .. |\n" +
-            "|.  .|\n" +
-            "+-XX-+", new Posn(2, 1)).bigBang(SCALE * 6, SCALE * 7);
+    new KlotskiWorld(""
+        + "+----+\n"
+        + "|CS C|\n"
+        + "|    |\n"
+        + "|Cc C|\n"
+        + "| .. |\n"
+        + "|.  .|\n"
+        + "+-XX-+", new Posn(2, 1)).bigBang(SCALE * 6, SCALE * 7);
   }
 }
