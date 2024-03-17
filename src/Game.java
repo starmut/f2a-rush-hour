@@ -1,9 +1,7 @@
 import javalib.worldimages.*;
 
 import java.awt.Color;
-import java.util.List;
-import java.util.Optional;
-import java.util.Stack;
+import java.util.*;
 
 /**
  * Represents a game of rush hour or klotski.
@@ -16,7 +14,7 @@ class Game implements IConfigAware {
 
   Optional<ATile> selectedPiece;
 
-  Stack<Move> moves;
+  Deque<Move> moves; // used as a stack
 
   Optional<ATile> lastMoved;
 
@@ -32,7 +30,7 @@ class Game implements IConfigAware {
     this.pieces = pieces;
     this.selectedPiece = Optional.empty();
     this.lastMoved = Optional.empty();
-    this.moves = new Stack<>();
+    this.moves = new LinkedList<>();
     this.score = 0;
 
     if (this.hasOverlappingPieces()) {
@@ -115,11 +113,11 @@ class Game implements IConfigAware {
       return;
     }
 
-    Move m = this.moves.pop();
+    Move m = this.moves.removeFirst();
     this.makeMove(m.negate());
     // this.makeMove just pushed the negated move onto the stack
     // so we pop again to remove that one.
-    this.moves.pop();
+    this.moves.removeFirst();
   }
 
   /**
@@ -137,7 +135,7 @@ class Game implements IConfigAware {
     if (this.hasOverlappingPieces() && !this.isWon()) {
       m.negate().perform();
     } else {
-      this.moves.push(m);
+      this.moves.addFirst(m);
       this.updateScore(m);
       this.lastMoved = Optional.of(m.getTile());
     }

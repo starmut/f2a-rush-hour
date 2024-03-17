@@ -4,7 +4,6 @@ import javalib.worldimages.Posn;
 import javalib.worldimages.TextImage;
 import javalib.worldimages.WorldImage;
 
-import java.util.Collections;
 import java.util.List;
 import java.awt.Color;
 import java.util.ArrayList;
