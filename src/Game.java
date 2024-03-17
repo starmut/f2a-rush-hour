@@ -105,10 +105,10 @@ class Game implements IConfigAware {
   }
 
   /**
-   * Undo the last move
+   * Undo the previous move.
    * EFFECT: potentially updates score if the undo is undoing a new piece
    */
-  void undoLastMove() {
+  void undoPreviousMove() {
     if (this.moves.isEmpty()) {
       return;
     }

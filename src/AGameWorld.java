@@ -176,7 +176,7 @@ abstract class AGameWorld extends World implements IConfigAware {
         break;
 
       case "u":
-        this.game.undoLastMove();
+        this.game.undoPreviousMove();
         return;
 
       default:
