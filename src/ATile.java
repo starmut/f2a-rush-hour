@@ -19,7 +19,7 @@ abstract class ATile implements IConfigAware {
   }
 
   /**
-   * Draw this piece as an image. The resulting image has a pinhole such
+   * Draw this tile as an image. The resulting image has a pinhole such
    * that overlaying it with a background with a pinhole in the top left
    * places the piece correctly.
    *
@@ -31,9 +31,10 @@ abstract class ATile implements IConfigAware {
   }
 
   /**
-   * Draw this piece as an image. The resulting image has a pinhole such
+   * Draw this tile as an image. The resulting image has a pinhole such
    * that overlaying it with a background with a pinhole in the top left
-   * places the piece correctly. Takes a color to draw with.
+   * places the tile correctly. Takes a color to draw with, as well as
+   * the amount of space to leave blank around the tile.
    *
    * @param c the color to drqw this piece with
    * @param gap the thickness of the blank border around the piece
@@ -52,7 +53,7 @@ abstract class ATile implements IConfigAware {
 
 
   /**
-   * Does this piece contain this Posn?
+   * Does this tile contain the Posn?
    *
    * @param p position to check
    * @return if this piece is on that Posn
@@ -62,9 +63,9 @@ abstract class ATile implements IConfigAware {
   }
 
   /**
-   * Does this piece overlap with the other piece?
+   * Does this tile overlap with the other tile?
    *
-   * @param other other game piece to check
+   * @param other other tile to check
    * @return if these pieces overlap
    */
   boolean overlaps(ATile other) {
@@ -72,7 +73,7 @@ abstract class ATile implements IConfigAware {
   }
 
   /**
-   * Return the width of this game piece
+   * Return the width of this tile.
    *
    * @return width
    */
@@ -81,7 +82,7 @@ abstract class ATile implements IConfigAware {
   }
 
   /**
-   * Return the height of this game piece.
+   * Return the height of this tile.
    *
    * @return height
    */
@@ -90,7 +91,7 @@ abstract class ATile implements IConfigAware {
   }
 
   /**
-   * gets the x coordinate of the rightmost edge of this piece
+   * gets the x coordinate of the rightmost edge of this tile.
    *
    * @return the maximum x coordinate
    */
@@ -99,7 +100,7 @@ abstract class ATile implements IConfigAware {
   }
 
   /**
-   * gets the y coordinate of the bottom edge of this piece
+   * gets the y coordinate of the bottom edge of this tile.
    *
    * @return the maximum y coordinate
    */
@@ -108,7 +109,7 @@ abstract class ATile implements IConfigAware {
   }
 
   /**
-   * Determines if this piece is a target overlapping an exit.
+   * Determines if this tile is a target overlapping an exit.
    *
    * @param pieces the exits to check against
    * @return if the game is won
@@ -118,17 +119,17 @@ abstract class ATile implements IConfigAware {
   }
 
   /**
-   * Determines if this is an Exit and contains the given piece.
+   * Determines if this is an Exit and contains the given tile.
    *
-   * @param o the piece to consider for having won the game
+   * @param o the tile to consider for having won the game
    * @return if the game is won
    */
-  boolean containsWinningPiece(ATile o) {
+  boolean containsWinningTile(ATile o) {
     return false;
   }
 
   /**
-   * Moves this piece by the deltas specified by the given Posn.
+   * Moves this tile by the deltas specified by the given Posn.
    *
    * @param delta the amount by which to move
    * @return whether the move was successful

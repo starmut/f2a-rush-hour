@@ -12,13 +12,13 @@ class TargetTile extends MovableTile {
   }
 
   /**
-   * Determines if this piece is a target overlapping an exit.
+   * Determines if this tile is a target overlapping an exit.
    *
    * @param pieces list of tiles to check through
    * @return if the game is won
    */
   @Override
   boolean hasWon(List<ATile> pieces) {
-    return pieces.stream().anyMatch(p -> p.containsWinningPiece(this));
+    return pieces.stream().anyMatch(p -> p.containsWinningTile(this));
   }
 }

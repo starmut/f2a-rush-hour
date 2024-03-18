@@ -3,9 +3,8 @@ import javalib.worldimages.Posn;
 import java.util.List;
 
 class KlotskiWorld extends AGameWorld {
-
   /**
-   * Creates a KlotskiWorld from a string and a position of the goal piece.
+   * Creates a KlotskiWorld from a string and a position of the goal tile.
    * The string must be of the format:
    * String demoLevel = ""
    * + "+----+\n"

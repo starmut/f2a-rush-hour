@@ -330,12 +330,12 @@ class ExamplesATile implements IConfigAware {
   }
 
   void testContainsWinningPiece(Tester t) {
-    t.checkExpect(w1.containsWinningPiece(w1), false);
-    t.checkExpect(w1.containsWinningPiece(w2), false);
-    t.checkExpect(w1.containsWinningPiece(v1), false);
-    t.checkExpect(w2.containsWinningPiece(w2), false);
-    t.checkExpect(w2.containsWinningPiece(v1), false);
-    t.checkExpect(v1.containsWinningPiece(v1), false);
+    t.checkExpect(w1.containsWinningTile(w1), false);
+    t.checkExpect(w1.containsWinningTile(w2), false);
+    t.checkExpect(w1.containsWinningTile(v1), false);
+    t.checkExpect(w2.containsWinningTile(w2), false);
+    t.checkExpect(w2.containsWinningTile(v1), false);
+    t.checkExpect(v1.containsWinningTile(v1), false);
   }
 
   void testMove(Tester t) {
@@ -393,15 +393,11 @@ class ExamplesExit {
       new Area(new Posn(4, 0), new Posn(4, 0)),
       List.of(new Posn(-1, 0)));
 
-  void testIsCollidable(Tester t) {
-    t.checkExpect(exit.isCollidable(), false);
-  }
-
   void testContainsWinningPiece(Tester t) {
     // a piece does not have to be a target to be eligible to "win" from Exit's point of view.
-    t.checkExpect(exit.containsWinningPiece(exit), true);
-    t.checkExpect(exit.containsWinningPiece(otherPiece), true);
-    t.checkExpect(exit.containsWinningPiece(target), false);
+    t.checkExpect(exit.containsWinningTile(exit), true);
+    t.checkExpect(exit.containsWinningTile(otherPiece), true);
+    t.checkExpect(exit.containsWinningTile(target), false);
   }
 }
 

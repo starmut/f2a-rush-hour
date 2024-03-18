@@ -3,7 +3,7 @@ import javalib.worldimages.Posn;
 import java.awt.Color;
 
 /**
- * Represents the game's exit.
+ * Represents an exit tile in the game.
  */
 class Exit extends APointTile {
   Exit(Posn basePoint) {
@@ -11,22 +11,13 @@ class Exit extends APointTile {
   }
 
   /**
-   * Determines if this is an Exit and contains the given piece.
+   * Determines if this is an Exit and contains the given tile.
    *
-   * @param o the piece to consider for having won the game
+   * @param o the tile to consider for having won the game
    * @return if the game is won
    */
   @Override
-  boolean containsWinningPiece(ATile o) {
+  boolean containsWinningTile(ATile o) {
     return this.overlaps(o);
-  }
-
-  /**
-   * Is this piece a physical obstacle that can collide with other pieces?
-   *
-   * @return if this pieces collides
-   */
-  boolean isCollidable() {
-    return false;
   }
 }

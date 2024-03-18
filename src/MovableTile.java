@@ -16,12 +16,12 @@ class MovableTile extends ATile {
   }
 
   /**
-   * Draw this piece as an image. The resulting image has a pinhole such
+   * Draw this tile as an image. The resulting image has a pinhole such
    * that overlaying it with a background with a pinhole in the top left
-   * places the piece correctly.
+   * places the tile correctly.
    *
-   * @param isSelected is the piece selected
-   * @return this piece's image
+   * @param isSelected is the tile selected
+   * @return this tile's image
    */
   @Override
   WorldImage draw(boolean isSelected) {
@@ -33,7 +33,7 @@ class MovableTile extends ATile {
   }
 
   /**
-   * Moves this piece by the deltas specified by the given Posn.
+   * Moves this tile by the deltas specified by the given Posn.
    *
    * @param delta the amount by which to move
    */

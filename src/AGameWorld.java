@@ -17,7 +17,7 @@ abstract class AGameWorld extends World implements IConfigAware {
           new IllegalArgumentException("Provided character was not a valid piece type");
 
   /**
-   * Creates a RushHourWorld from a string and a position of the goal piece.
+   * Creates a RushHourWorld from a string and a position of the goal tile.
    * The string must be of the format:
    * String demoLevel = ""
    * + "+------+\n"
@@ -39,7 +39,7 @@ abstract class AGameWorld extends World implements IConfigAware {
 
     float hue = 0.1f;
     // uses a lambda to count the number of tiles in the input string
-    // to do evenly-spaced HSV colors for the pieces
+    // to do evenly-spaced HSV colors for the tiles
     float inc = 0.8f / level.chars()
             .filter(ch -> Stream.of('C', 'c', 'T', 't', 'S', '.')
                 .map(Integer::valueOf)
@@ -150,7 +150,7 @@ abstract class AGameWorld extends World implements IConfigAware {
   }
 
   /**
-   * Select the piece at the given Posn on the board.
+   * Select the tile at the given Posn on the board.
    *
    * @param pos position to select at
    */
