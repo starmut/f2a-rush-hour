@@ -5,7 +5,7 @@ import java.awt.Color;
 import java.util.List;
 
 /**
- * Represents a movable, selectable, vehicle.
+ * Represents a movable, selectable, tile.
  */
 class MovableTile extends ATile {
   List<Posn> allowedMovements;

@@ -4,7 +4,7 @@ import java.awt.Color;
 import java.util.List;
 
 /**
- * Represents the target vehicle in a game of rush hour
+ * Represents the target tile in a game of rush hour
  */
 class TargetTile extends MovableTile {
   TargetTile(Area a, List<Posn> allowedMovements) {
@@ -14,7 +14,7 @@ class TargetTile extends MovableTile {
   /**
    * Determines if this piece is a target overlapping an exit.
    *
-   * @param pieces list of vehicles to check through
+   * @param pieces list of tiles to check through
    * @return if the game is won
    */
   @Override

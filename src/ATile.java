@@ -7,7 +7,7 @@ import java.awt.Color;
 import java.util.List;
 
 /**
- * Represents a vehicle in the game.
+ * Represents a tile in the game.
  */
 abstract class ATile implements IConfigAware {
   Area area;
