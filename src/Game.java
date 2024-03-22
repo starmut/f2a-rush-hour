@@ -33,7 +33,7 @@ class Game implements IConfigAware {
     this.moves = new LinkedList<>();
     this.score = 0;
 
-    if (this.hasOverlappingPieces()) {
+    if (this.hasOverlappingPieces() && !this.isWon()) {
       throw new IllegalArgumentException("Game must not have any collisions to start!");
     }
   }

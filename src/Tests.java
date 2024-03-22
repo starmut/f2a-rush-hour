@@ -192,25 +192,6 @@ class ExamplesGame {
       + "|.  .|\n"
       + "+-XX-+";
 
-  String klotskiOnlyValidChar =
-      "+------+\n" +
-          "|     T|\n" +
-          "|      |\n" +
-          "|c  S  X\n" +
-          "|     T|\n" +
-          "|  .   |\n" +
-          "|      |\n" +
-          "+------+";
-
-  String klotskiLevel = ""
-      + "+----+\n"
-      + "|CS C|\n"
-      + "|    |\n"
-      + "|Cc C|\n"
-      + "| .. |\n"
-      + "|.  .|\n"
-      + "+-XX-+";
-
   String won =
       "+---+\n" +
           "|   |\n" +
@@ -389,7 +370,7 @@ class ExamplesGame {
     t.checkExpect(g.selectedTile.isPresent(), false);
   }
 
-  void testMakeMove(Tester t) {
+  void testMakeMoveAndUndoMove(Tester t) {
     Game g = new KlotskiWorld(""
         + "+----+\n"
         + "|CS C|\n"
@@ -399,7 +380,117 @@ class ExamplesGame {
         + "|.  .|\n"
         + "+-XX-+", new Posn(2, 1)).game;
 
-    t.checkExpect(g.makeMove())
+    t.checkExpect(g.moves.isEmpty(), true);
+    g.makeMove(new Move(g.pieces.get(19), new Posn(0, 1)));
+    t.checkExpect(g.moves.getLast(), new Move(g.pieces.get(19), new Posn(0, 1)));
+    g.undoPreviousMove();
+    t.checkExpect(g.moves.isEmpty(), true);
+    t.checkExpect(g.pieces,
+        new KlotskiWorld(""
+            + "+----+\n"
+            + "|CS C|\n"
+            + "|    |\n"
+            + "|Cc C|\n"
+            + "| .. |\n"
+            + "|.  .|\n"
+            + "+-XX-+", new Posn(2, 1)).game.pieces);
+  }
+
+  void testScore(Tester t) {
+    Game g = new KlotskiWorld(""
+        + "+----+\n"
+        + "|CS C|\n"
+        + "|    |\n"
+        + "|Cc C|\n"
+        + "| .. |\n"
+        + "|.  .|\n"
+        + "+-XX-+", new Posn(2, 1)).game;
+
+    t.checkExpect(g.score, 0);
+    t.checkExpect(g.moves.isEmpty(), true);
+    g.makeMove(new Move(g.pieces.get(19), new Posn(0, 1)));
+    t.checkExpect(g.moves.getLast(), new Move(g.pieces.get(19), new Posn(0, 1)));
+    t.checkExpect(g.score, 1);
+    g.undoPreviousMove();
+    t.checkExpect(g.moves.isEmpty(), true);
+    t.checkExpect(g.pieces,
+        new KlotskiWorld(""
+            + "+----+\n"
+            + "|CS C|\n"
+            + "|    |\n"
+            + "|Cc C|\n"
+            + "| .. |\n"
+            + "|.  .|\n"
+            + "+-XX-+", new Posn(2, 1)).game.pieces);
+    t.checkExpect(g.score, 1);
+
+    g = new KlotskiWorld(""
+        + "+----+\n"
+        + "|CS C|\n"
+        + "|    |\n"
+        + "|Cc C|\n"
+        + "| .. |\n"
+        + "|.  .|\n"
+        + "+-XX-+", new Posn(2, 1)).game;
+
+    t.checkExpect(g.score, 0);
+    t.checkExpect(g.moves.isEmpty(), true);
+    g.makeMove(new Move(g.pieces.get(19), new Posn(0, 1)));
+    t.checkExpect(g.moves.getLast(), new Move(g.pieces.get(19), new Posn(0, 1)));
+    g.makeMove(new Move(g.pieces.get(20), new Posn(0, 1)));
+    t.checkExpect(g.score, 2);
+    g.undoPreviousMove();
+    t.checkExpect(g.score, 2);
+    g.undoPreviousMove();
+    t.checkExpect(g.score, 3);
+    t.checkExpect(g.moves.isEmpty(), true);
+    t.checkExpect(g.pieces,
+        new KlotskiWorld(""
+            + "+----+\n"
+            + "|CS C|\n"
+            + "|    |\n"
+            + "|Cc C|\n"
+            + "| .. |\n"
+            + "|.  .|\n"
+            + "+-XX-+", new Posn(2, 1)).game.pieces);
+  }
+
+  void testMoveSelectedBy(Tester t) {
+    Game g = new RushHourWorld(""
+        + "+----+\n"
+        + "|C  C|\n"
+        + "|    |\n"
+        + "| c C|\n"
+        + "| .. |\n"
+        + "|.  .|\n"
+        + "+-XX-+", new Posn(1, 1)).game;
+
+    g.selectPiece(new Posn(1, 1));
+    g.moveSelectedBy(new Posn(1, 0));
+    t.checkExpect(g.moves.isEmpty(), true); // invalid move, not registered
+
+    g.moveSelectedBy(new Posn(0, 1));
+    t.checkExpect(g.moves.isEmpty(), false);
+    t.checkExpect(g.lastMoved, Optional.of(g.pieces.get(7)));
+  }
+
+  void testUpdateScore(Tester t) {
+    Game g = new KlotskiWorld(""
+        + "+----+\n"
+        + "|CS C|\n"
+        + "|    |\n"
+        + "|Cc C|\n"
+        + "| .. |\n"
+        + "|.  .|\n"
+        + "+-XX-+", new Posn(2, 1)).game;
+
+    t.checkExpect(g.score, 0);
+    g.makeMove(new Move(g.pieces.get(19), new Posn(0, 1)));
+    t.checkExpect(g.score, 1);
+    g.makeMove(new Move(g.pieces.get(19), new Posn(0, 1)));
+    t.checkExpect(g.score, 1);
+    g.updateScore(new Move(g.pieces.get(20), new Posn(0, 1)));
+    t.checkExpect(g.score, 2);
   }
 }
 
@@ -651,6 +742,8 @@ class ExamplesTargetTile {
   }
 }
 
+// these are giant implementation specific classes
+// that are best tests by playing the game
 class ExamplesRushHourWorld implements IConfigAware {
   void testGame(Tester t) {
     new RushHourWorld(""
