@@ -6,6 +6,7 @@ import tester.Tester;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 class ExamplesArea {
   Area a1 = new Area(new Posn(0, 0), new Posn(0, 0));
@@ -172,6 +173,44 @@ class ExamplesGame {
           "|      |\n" +
           "+------+";
 
+  String klotskiOnlyValidChar =
+      "+------+\n" +
+          "|     T|\n" +
+          "|      |\n" +
+          "|c  S  X\n" +
+          "|     T|\n" +
+          "|  .   |\n" +
+          "|      |\n" +
+          "+------+";
+
+  String klotskiLevel = ""
+      + "+----+\n"
+      + "|CS C|\n"
+      + "|    |\n"
+      + "|Cc C|\n"
+      + "| .. |\n"
+      + "|.  .|\n"
+      + "+-XX-+";
+
+  String klotskiOnlyValidChar =
+      "+------+\n" +
+          "|     T|\n" +
+          "|      |\n" +
+          "|c  S  X\n" +
+          "|     T|\n" +
+          "|  .   |\n" +
+          "|      |\n" +
+          "+------+";
+
+  String klotskiLevel = ""
+      + "+----+\n"
+      + "|CS C|\n"
+      + "|    |\n"
+      + "|Cc C|\n"
+      + "| .. |\n"
+      + "|.  .|\n"
+      + "+-XX-+";
+
   String won =
       "+---+\n" +
           "|   |\n" +
@@ -181,39 +220,186 @@ class ExamplesGame {
   void testParse(Tester t) {
     t.checkConstructorNoException(
         "valid level",
-        "RushHour",
+        "RushHourWorld",
         demoLevel, new Posn(1, 3)
     );
     t.checkConstructorNoException(
         "unsolvable but valid",
-        "RushHour",
+        "RushHourWorld",
         unsolvable, new Posn(1, 3)
     );
     t.checkConstructorNoException(
         "non-rectangular board",
-        "RushHour",
+        "RushHourWorld",
         "+---+\n| |\n+-", new Posn(0, 0)
     );
     t.checkConstructorNoException(
         "no exits",
-        "RushHour",
+        "RushHourWorld",
         noExit, new Posn(0, 0)
     );
     t.checkConstructorNoException(
         "many exits",
-        "RushHour",
+        "RushHourWorld",
         multiTarget, new Posn(0, 0)
     );
     t.checkConstructorNoException(
         "no target",
-        "RushHour",
+        "RushHourWorld",
         noTarget, new Posn(0, 0)
     );
     t.checkConstructorException(
-        new IllegalArgumentException("Illegal character \"b\" in level string!"),
-        "RushHour",
+        new IllegalArgumentException("Provided character was not a valid piece type"),
+        "RushHourWorld",
         invalidChar, new Posn(0, 0)
     );
+
+    t.checkConstructorNoException(
+        "rush hour valid char",
+        "RushHourWorld",
+        klotskiOnlyValidChar, new Posn(0, 0)
+    );
+
+    t.checkConstructorNoException(
+        "klotski only valid char",
+        "KlotskiWorld",
+        klotskiOnlyValidChar, new Posn(0, 0)
+    );
+  }
+
+  // note: to avoid suffering, make a world and get the game field instead of making
+  // a game directly, since the game has no parsing support (and should not).
+
+  void testDraw(Tester t) {
+    // this is covered by integration tests in ExamplesRushHourWorld and ExamplesKlotskiWorld
+    // run the game and look if the output looks plausible
+  }
+
+  void testOverlappingPieces(Tester t) {
+    Game g = new KlotskiWorld(""
+        + "+----+\n"
+        + "|CS C|\n"
+        + "|    |\n"
+        + "|Cc C|\n"
+        + "| .. |\n"
+        + "|.  .|\n"
+        + "+-XX-+", new Posn(2, 1)).game;
+
+    // in these tests, I literally cannot construct a game which has overlapping pieces
+    // because the design is smart enough to just stop me. Therefore, we do a bunch of things
+    // that otherwise would cause overlaps, and check that the game is using hasOverlappingPieces
+    // to correctly to prevent me from making those changes.
+    t.checkExpect(g.hasOverlappingPieces(), false);
+    g.makeMove(new Move(g.pieces.get(0), new Posn(0, 1)));
+    t.checkExpect(g.hasOverlappingPieces(), false);
+    g.makeMove(new Move(g.pieces.get(3), new Posn(-1, 0)));
+    t.checkExpect(g.hasOverlappingPieces(), false);
+    g.makeMove(new Move(g.pieces.get(6), new Posn(1, 0)));
+    t.checkExpect(g.hasOverlappingPieces(), false);
+    g.makeMove(new Move(g.pieces.get(15), new Posn(0, -1)));
+    t.checkExpect(g.hasOverlappingPieces(), false);
+
+    // we can also check that the constructor errors when given overlapping pieces
+    t.checkConstructorException(
+        new IllegalArgumentException("Game must not have any collisions to start!"),
+        "KlotskiWorld", ""
+            + "+----+\n"
+            + "|C SC|\n"
+            + "|    |\n"
+            + "|Cc C|\n"
+            + "| .. |\n"
+            + "|.  .|\n"
+            + "+-XX-+", new Posn(2, 1));
+
+    t.checkConstructorException(
+        new IllegalArgumentException("Game must not have any collisions to start!"),
+        "KlotskiWorld", ""
+            + "+----+\n"
+            + "|CS C|\n"
+            + "|    |\n"
+            + "|Ct C|\n"
+            + "| .. |\n"
+            + "|.  .|\n"
+            + "+-XX-+", new Posn(2, 1));
+
+    t.checkConstructorException(
+        new IllegalArgumentException("Game must not have any collisions to start!"),
+        "KlotskiWorld", ""
+            + "+----+\n"
+            + "|CS C|\n"
+            + "|    |\n"
+            + "|Ct  |\n"
+            + "| .S |\n"
+            + "|.  .|\n"
+            + "+-XX-+", new Posn(2, 1));
+  }
+
+  void testIsWon(Tester t) {
+    t.checkExpect(
+        new KlotskiWorld(""
+            + "+----+\n"
+            + "|CS C|\n"
+            + "|    |\n"
+            + "|Cc C|\n"
+            + "| .. |\n"
+            + "|.  .|\n"
+            + "+-XX-+", new Posn(2, 1)).game.isWon(), false);
+
+    t.checkExpect(
+        new KlotskiWorld(""
+            + "+----+\n"
+            + "|CS C|\n"
+            + "|  X |\n"
+            + "|Cc C|\n"
+            + "| .. |\n"
+            + "|.  .|\n"
+            + "+-XX-+", new Posn(2, 1)).game.isWon(), true);
+
+    t.checkExpect(
+        new KlotskiWorld(""
+            + "+----+\n"
+            + "|CSXC|\n"
+            + "| XX |\n"
+            + "|Cc C|\n"
+            + "| .. |\n"
+            + "|.  .|\n"
+            + "+-XX-+", new Posn(2, 1)).game.isWon(), true);
+  }
+
+  void testSelectPiece(Tester t) {
+    Game g = new KlotskiWorld(""
+        + "+----+\n"
+        + "|CS C|\n"
+        + "|    |\n"
+        + "|Cc C|\n"
+        + "| .. |\n"
+        + "|.  .|\n"
+        + "+-XX-+", new Posn(2, 1)).game;
+
+    t.checkExpect(g.selectedTile.isPresent(), false);
+    g.selectPiece(new Posn(0, 0));
+    t.checkExpect(g.selectedTile, Optional.of(new Wall(new Posn(0, 0))));
+    g.selectPiece(new Posn(2, 5));
+    t.checkExpect(g.selectedTile.isPresent(), false);
+    g.selectPiece(new Posn(2, 6));
+    t.checkExpect(g.selectedTile, Optional.of(new Exit(new Posn(2, 6))));
+    g.selectPiece(new Posn(0, 0));
+    t.checkExpect(g.selectedTile, Optional.of(new Wall(new Posn(0, 0))));
+    g.selectPiece(new Posn(-1, 5));
+    t.checkExpect(g.selectedTile.isPresent(), false);
+  }
+
+  void testMakeMove(Tester t) {
+    Game g = new KlotskiWorld(""
+        + "+----+\n"
+        + "|CS C|\n"
+        + "|    |\n"
+        + "|Cc C|\n"
+        + "| .. |\n"
+        + "|.  .|\n"
+        + "+-XX-+", new Posn(2, 1)).game;
+
+    t.checkExpect(g.makeMove())
   }
 }
 

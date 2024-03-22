@@ -12,7 +12,7 @@ import java.util.*;
 class Game implements IConfigAware {
   List<ATile> pieces;
 
-  Optional<ATile> selectedPiece;
+  Optional<ATile> selectedTile;
 
   Deque<Move> moves; // used as a stack
 
@@ -28,7 +28,7 @@ class Game implements IConfigAware {
    */
   Game(List<ATile> pieces) {
     this.pieces = pieces;
-    this.selectedPiece = Optional.empty();
+    this.selectedTile = Optional.empty();
     this.lastMoved = Optional.empty();
     this.moves = new LinkedList<>();
     this.score = 0;
@@ -46,7 +46,7 @@ class Game implements IConfigAware {
 
     for (ATile p : this.pieces) {
       image = new OverlayImage(
-          p.draw(this.selectedPiece.map(x -> p == x).orElse(false)),
+          p.draw(this.selectedTile.map(x -> p == x).orElse(false)),
           image);
     }
 
@@ -96,10 +96,10 @@ class Game implements IConfigAware {
    * @param pos position of selection (in-game coordinates)
    */
   void selectPiece(Posn pos) {
-    this.selectedPiece = Optional.empty();
+    this.selectedTile = Optional.empty();
     for (ATile piece : this.pieces) {
       if (piece.contains(pos)) {
-        this.selectedPiece = Optional.of(piece);
+        this.selectedTile = Optional.of(piece);
       }
     }
   }
@@ -175,7 +175,7 @@ class Game implements IConfigAware {
    * @param delta the amount to move the selected piece by
    */
   void moveSelectedBy(Posn delta) {
-    this.selectedPiece
+    this.selectedTile
         .ifPresent(t -> this.makeMove(new Move(t, delta)));
   }
 }
