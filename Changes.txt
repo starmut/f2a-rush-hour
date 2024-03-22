@@ -1,39 +1,33 @@
 # Changes
 
-## Mutation
+## Klotski
 
-In line with the (optional) switch to using `impworld`, we decided to make our methods
-_mutate_ fields rather than create and return new objects with fields changed.
-This made it easier to deal with changes to pieces, such as movement while not needing to
-change the whole list.
+We added support for the Klotski game, by supporting two new characters in the
+parsing format: "." and "S" for a 1x1 and 2x2 movable tile respectively.
+These can move 1 cell in all 4 cardinal directions.
+To this end, we abstracted out the `AGameWorld` class containing base functionality
+for both Rush Hour and Klotski.
 
-## Two `Posn`s -> `Area`
+## Move class
 
-In Daniel's implementation for game pieces for hw5 (which we used large parts of),
-pieces held the information for their top-left and bottom-right `Posn`s.
-As the assignment specified, we moved these two fields into an `Area` class.
+The move class simply represents a piece that's being moved in a certain Posn.
+These may not always be valid, so the `perform()`` method returns a boolean if the
+_piece_ accepted the move (it was allowed in its move set).
+A move can still be invalid since it could result in pieces overlapping, so that
+needed to be checked separately.
+This class also provides a way to invert the move, by returning a new object that
+will un-perform it.
 
-## `IList` -> `List`
+## Renaming classes to be less Rush Hour-centric
 
-We switched over from using `Empty` and `Cons` classes for our lists to using
-`java.util.List` (mainly `ArrayList`).
-Not having a direct `foldl`/`foldr` replacement was slightly inconvenient, but it could be
-easily worked around.
+The classes used to be named "game piece", "vehicle", and so on, which reflected
+well in the Rush Hour game, but not as much in the case of Klotski, since the
+vehicle and parking lot analogy doesn't apply.
+We renamed these classes to be based on "tile"s.
 
-## `Vehicle`: `List<Posn> allowedMovements`
+## Scoring and Undo
 
-Previously in Ari's implementation, there were two classes that described horizontally-
-and vertically- moving vehicles.
-Daniel's implementation assumed that vehicles will move in the direction they are shorter in.
-
-We decided to add a field to the `Vehicle` class to describe the allowed motions for each vehicle.
-Non-`Vehicle` pieces have no allowed movements, and thus do not respond to any movement.
-This, combined with the `Area` class, will allow us to make vehicles of any size with any arbitrary
-move sets, with minimal changes to our code.
-
-## Collidable Pieces
-
-Most pieces are collidable, as in they would prevent movement if it results in a piece overlapping
-with it. `Exit`s however, should allow vehicles to overlap them, since that's the win condition.
-We added a method `isCollidable()` to `AGamePiece` to determine if a piece is a "physical" piece
-that would prevent overlapping.
+We added the mechanism to keep score, and undo previous moves - the user-facing
+mechanics of this are specified in the user guide.
+The previous moves were stored as a stack (Deque) to make it easier to pop off
+the top move and perform the inverse move.

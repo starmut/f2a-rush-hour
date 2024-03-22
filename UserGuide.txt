@@ -2,19 +2,46 @@
 
 ## Running the game
 
+The game now has two variants: Rush Hour, and Klotski.
+
 To run Rush Hour, simply run the `ExamplesRushHourWorld` class using the tester library.
 The java command should look something like:
+
+To run Klotski, run the `ExamplesKlotskiWorld` class instead.
+
 ```
 java -classpath out/production/hw7-rush-hour:/path/to/javalib.jar:/path/to/tester.jar \
-     tester.Main ExamplesRushHourWorld
+     tester.Main <ExamplesRushHourWorld | ExamplesKlotskiWorld>
 ```
 
 ## Playing the game
 
-The target piece is red. You can click to select a piece, and it will become yellow.
-Selected pieces can be moved by pressing the arrow keys, or WASD.
+### Mechanics
 
-Pieces move along the direction in which they are longest.
-If a piece cannot move in the direction you specified, it will not move.
+The target tile is red. You can click to select a tile, and it will become yellow.
+Selected tile can be moved by pressing the arrow keys, or WASD.
+If moving a tile causes it to overlap with another tile, that move will not occur.
 
-The goal is to get the red piece to the exit, which is drawn in grey.
+The goal is to get the red tile to the exit, which is drawn in grey.
+
+You can undo moves as well, and keep undoing until you enter the starting state again.
+If your undo starts moving a different tile, that counts as a separate move, which will
+still increase your score.
+
+#### Rush Hour
+
+Tiles move in the direction in which they are longest.
+If a tile is square, it can move in all four directions.
+If a tile cannot move in the direction you specify, it will not move.
+
+#### Klotski
+
+Tiles can move in all four cardinal directions.
+
+### Scoring
+
+A move is defined as a change in position of a tile, from start to finish.
+If you move a single tile multiple times, it still counts as one single move.
+If you move a different tile, it starts a new move.
+
+Each new move increases your score by 1.

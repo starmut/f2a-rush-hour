@@ -3,7 +3,7 @@
 ## interface IConfigAware
 
 Interface that holds constants (because `public static final` is too illegal).
-Manages rendering properties of the game, such as the scale and gap between vehicles.
+Manages rendering properties of the game, such as the scale and gap between tiles.
 Classes implementing this interface are "aware" of the configuration, and can use these values.
 
 ## class Area
@@ -13,50 +13,77 @@ and overlap checking with other areas. Uses double-inclusive intervals
 since those make collision checking clearer; half-open is more suited
 to splitting and iterating, which is not functionality we need here.
 
-## abstract class AGamePiece
+## class Move
 
-Represents a generic game piece. We abstracted it to handle most general functionality
+Represents a move made by the user, holds the tile moved and the Posn it was
+moved by. Its `perform()` method returns true if the move was accepted by the
+tile (allowed by its move set, irrespective of causing any overlaps with other tiles).
+Also allows inverting the move for undoing them if needed.
+
+## abstract class ATile
+
+Represents a generic tile. We abstracted it to handle most general functionality
 like piece collisions, hit tests, and drawing.
-It contains an area representing the shape of the piece and a color for drawing.
+It contains an area representing the shape of the tile and a color for drawing.
 It also contains default implementations of various helpers that are overridden in subclasses.
 
-## abstract class APointPiece extends AGamePiece
+## abstract class APointTile extends ATile
 
-Represents a generic 1x1 game piece. Used as the base for Wall and Exit.
+Represents a generic static 1x1 tile. Used as the base for Wall and Exit.
 
-## class Wall extends APointPiece
+> Note: 1x1 Klotski tiles are _not_ based on this class, they require
+> movement functionality defined in `MovableTile` and so are just 1x1 instances
+> of `MovableTile` (or `TargetTile` in the case that it's a target).
 
-This is a very simple class. It just extends APointPiece and sets the color to gray.
+## class Wall extends APointTile
+
+This is a very simple class. It just extends ATile and sets the color to gray.
 Basically syntactic sugar :)
 
-## class Exit extends APointPiece
+## class Exit extends APointTile
 
-A 1x1 piece that cannot be collided with and checks the win condition.
+A 1x1 tile that cannot be collided with and checks the win condition.
 Color is automatically set to light gray.
 
-## class Vehicle extends AGamePiece
+## class MovableTile extends ATile
 
-A movable, selectable vehicle (the cars and trucks in the game).
-Overrides various methods of AGamePiece to draw itself in a different color when selected.
+A movable, selectable tile (the colored tiles in the game).
+Overrides various methods of ATile to draw itself in a different color when selected.
 Also handles movement by keeping track of a list of allowed movements and moving itself
 when instructed if able to move in that direction.
 
-## class TargetVehicle extends Vehicle
+## class TargetTile extends MovableTile
 
-A Vehicle that can check if it has won, and with its color set to red.
+A MovableTile that can check if it has won, and with its color set to red.
 
-## class RushHour
+## class Game
 
 The main class that performs all game logic.
-Holds the pieces on the board, and the selected piece (if any).
+Holds the tiles on the board, and the selected piece (if any), the Deque
+of previous moves, the last moved piece (if any), and the current score.
+The same game logic can be applied to both Rush Hour and Klotski games.
 
-> Note: _any_ piece can be selected, even Wall and Exit.
-> Such pieces just do not respond to selection, and don't change color or move.
-> This was to avoid the type of `selectedPiece` being `Option<Vehicle>` which means that
-> we would have to treat vehicles and other pieces separately, or do some type casting.
+> Note: _any_ tile can be selected, even Wall and Exit.
+> Such tiles just do not respond to selection, and don't change color or move.
+> This was to avoid the type of `selectedTile` being `Option<MovableTile>` which means that
+> we would have to treat movable and static tiles separately, or do some type casting.
 
-## class RushHourWorld extends World
+## abstract class AGameWorld extends World
 
-A wrapper for the RushHourGame that uses the BigBang handlers to make the game playable.
+A wrapper for the Game that uses the BigBang handlers to make the game playable.
 Also deals with any scale-specific stuff for drawing and transforming screen coordinates
 into game coordinates for mouse events.
+Leaves the movement characteristics for each piece type unspecified, as they will vary
+in game modes.
+
+## class RushHourWorld extends AGameWorld
+
+Specifies the movement rules for the types of tiles, that vertical tiles can only
+move vertically up or down one cell, horizontal tiles can only move horizontally
+up or down one cell, and the square Klotski tiles can move once cell in all
+cardinal directions.
+
+## class KlotskiWorld extends AGameWorld
+
+Specifies the movement rules for Klotski, that all tiles can move one cell in
+all cardinal directions, regardless of their shape.
